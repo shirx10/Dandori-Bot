@@ -1,0 +1,16 @@
+courses/
+__pycache__/
+myenv/
+.git/
+.gitignore
+.DS_Store
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.streamlit/secrets.toml
+credentials.json
