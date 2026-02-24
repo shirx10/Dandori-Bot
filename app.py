@@ -1,12 +1,12 @@
+import os
 import streamlit as st
 import pandas as pd
-from google.cloud import firestore
-import os
 from map import map_image
+from google.cloud import firestore
 
-import os
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/secrets/GOOGLE_APPLICATION_CREDENTIALS"
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/secrets/GOOGLE_APPLICATION_CREDENTIALS"
 db = firestore.Client()
+
 
 @st.cache_data 
 def get_all_courses():
