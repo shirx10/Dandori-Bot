@@ -1,27 +1,20 @@
 # Use official Python image with more complete base
-FROM python:3.13-slim-bookworm
+FROM python:3.13-slim
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies and upgrade sqlite3
+# Install system dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
     python3-dev \
-    wget \
     libgl1 \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
     libxrender-dev \
-    && wget https://www.sqlite.org/2024/sqlite-autoconf-3460000.tar.gz && \
-    tar xzf sqlite-autoconf-3460000.tar.gz && \
-    cd sqlite-autoconf-3460000 && \
-    ./configure --prefix=/usr/local && \
-    make && make install && \
-    cd .. && rm -rf sqlite-autoconf-3460000* && \
-    apt-get clean && \
+    && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy project files
