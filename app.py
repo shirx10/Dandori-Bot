@@ -4,7 +4,11 @@ import pandas as pd
 from map import map_image
 from google.cloud import firestore
 
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/secrets/GOOGLE_APPLICATION_CREDENTIALS"
+# Set credentials path - will be mounted as a secret in production
+credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "./secrets/credentials.json")
+if credentials_path:
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
+
 db = firestore.Client()
 
 

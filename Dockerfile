@@ -1,5 +1,5 @@
 # Use official Python image with more complete base
-FROM python:3.13-slim-bullseye
+FROM python:3.13-slim-bookworm
 
 # Set working directory
 WORKDIR /app
@@ -9,6 +9,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
     python3-dev \
+    sqlite3 \
+    libsqlite3-dev \
     libgl1 \
     libglib2.0-0 \
     libsm6 \

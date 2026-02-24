@@ -1,4 +1,3 @@
-from pipeline import extract_to_dataframe
 import chromadb
 import re
 
