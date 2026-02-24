@@ -26,7 +26,8 @@ except Exception as e:
     if os.path.exists("./secrets/credentials.json"):
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./secrets/credentials.json"
     else:
-        raise RuntimeError(f"Could not load credentials: {e}")
+        st.error("Failed to load credentials from Secret Manager")
+        raise RuntimeError("Could not load credentials from Secret Manager or local file")
 
 db = firestore.Client()
 
