@@ -4,8 +4,8 @@ from google.cloud import firestore
 import os
 from map import map_image
 
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/secrets/GOOGLE_APPLICATION_CREDENTIALS"
 db = firestore.Client()
 
 @st.cache_data 
