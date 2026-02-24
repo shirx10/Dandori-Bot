@@ -1,13 +1,32 @@
+import json
 import os
-import streamlit as st
-import pandas as pd
-from map import map_image
-from google.cloud import firestore
 
-# Set credentials path - will be mounted as a secret in production
-credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "./secrets/credentials.json")
-if credentials_path:
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
+import pandas as pd
+import streamlit as st
+from google.cloud import firestore, secretmanager
+
+from map import map_image
+
+# Load Google Cloud credentials from Secret Manager
+def get_secret(secret_id, version_id="latest"):
+    client = secretmanager.SecretManagerServiceClient()
+    project_id = os.environ.get("GCP_PROJECT_ID")
+    name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+    response = client.access_secret_version(request={"name": name})
+    return response.payload.data.decode("UTF-8")
+
+# Fetch credentials from Secret Manager and write to temp file
+try:
+    creds_json = get_secret("google-credentials")
+    with open("/tmp/credentials.json", "w", encoding="utf-8") as f:
+        f.write(creds_json)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/tmp/credentials.json"
+except Exception as e:
+    # Fallback for local development
+    if os.path.exists("./secrets/credentials.json"):
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./secrets/credentials.json"
+    else:
+        raise RuntimeError(f"Could not load credentials: {e}")
 
 db = firestore.Client()
 
