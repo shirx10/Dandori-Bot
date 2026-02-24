@@ -4,19 +4,24 @@ FROM python:3.13-slim-bookworm
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies and upgrade sqlite3
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
     python3-dev \
-    sqlite3 \
-    libsqlite3-dev \
+    wget \
     libgl1 \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
     libxrender-dev \
-    && apt-get clean && \
+    && wget https://www.sqlite.org/2024/sqlite-autoconf-3460000.tar.gz && \
+    tar xzf sqlite-autoconf-3460000.tar.gz && \
+    cd sqlite-autoconf-3460000 && \
+    ./configure --prefix=/usr/local && \
+    make && make install && \
+    cd .. && rm -rf sqlite-autoconf-3460000* && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy project files
