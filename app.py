@@ -1,12 +1,15 @@
-import json
-import os
+# import os
+# from google.cloud import firestore, secretmanager
 
-import pandas as pd
 import streamlit as st
+import uuid
+import datetime
+import pandas as pd
+import os
 from google.cloud import firestore, secretmanager
-from RAG import client_setup, collection_setup, embed_data
-
 from map import map_pin
+
+from RAG import client_setup, collection_setup, embed_data
 
 # Load Google Cloud credentials from Secret Manager
 def get_secret(secret_id, version_id="latest"):
@@ -31,7 +34,12 @@ except Exception as e:
         raise RuntimeError("Could not load credentials from Secret Manager or local file")
 
 db = firestore.Client()
+# sz
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
 
+st.divider()
+st.header("Dandori Course Assistant")
 
 @st.cache_data 
 def get_all_courses():
@@ -40,12 +48,27 @@ def get_all_courses():
 
 @st.cache_data
 def skills_set(df):
-    return set(df['Skills'].str.split(',').explode().str.strip())
+    # return set(df['Skills'].str.split(',').explode().str.strip())
+    
+    # Extract all skills and capitalize them properly
+    all_skills = df['Skills'].str.split(',').explode().str.strip()
+    return set(skill.title() for skill in all_skills if skill)
 
 # Initialize session state
 if "df_dandori" not in st.session_state:
     st.session_state.df_dandori = get_all_courses()
 
+# skills = skills_set(st.session_state.df_dandori)
+# display_cols = [
+#     'Class_ID',
+#     'Course_Title',
+#     'Instructor',
+#     'Location',
+#     'Course_Type',
+#     'Cost'
+# ]
+
+st.session_state.df_dandori = get_all_courses()
 skills = skills_set(st.session_state.df_dandori)
 display_cols = [
     'Class_ID',
