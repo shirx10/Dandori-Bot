@@ -1,6 +1,5 @@
 import streamlit as st
 from llm import llm_client_setup, generate_response
-from RAG import client_setup, collection_setup, embed_data
 
 st.title("Dando the Helpful Panda 🐼")
 
@@ -8,16 +7,6 @@ st.title("Dando the Helpful Panda 🐼")
 if "df_dandori" not in st.session_state:
     st.error("Course data not loaded. Please go to the main page first.")
     st.stop()
-
-@st.cache_resource
-def setup_collection():
-    client = client_setup()
-    collection = collection_setup(client)
-    embed_data(st.session_state.df_dandori, collection)
-    return collection
-
-# if st.session_state.df_dandori:
-collection = setup_collection()
 
 @st.cache_resource
 def setup():
@@ -37,7 +26,7 @@ if user_query:
         st.session_state.messages.append({
             "role": "user", "content": user_query
             })
-        response = generate_response(client, user_query, collection)
+        response = generate_response(client, user_query, st.session_state.collection)
         st.session_state.messages.append({
             "role": "assistant", "content": response
             })

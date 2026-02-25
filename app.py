@@ -4,6 +4,8 @@ import os
 import pandas as pd
 import streamlit as st
 from google.cloud import firestore, secretmanager
+from RAG import client_setup, collection_setup, embed_data
+
 from map import map_image
 
 # Load Google Cloud credentials from Secret Manager
@@ -53,6 +55,16 @@ display_cols = [
     'Course_Type',
     'Cost'
 ]
+
+@st.cache_resource
+def setup_collection():
+    client = client_setup()
+    collection = collection_setup(client)
+    embed_data(st.session_state.df_dandori, collection)
+    return collection
+
+# if st.session_state.df_dandori:
+st.session_state.collection = setup_collection()
 
 if "filtered_df" not in st.session_state:
     st.session_state.filtered_df = st.session_state.df_dandori.copy()
