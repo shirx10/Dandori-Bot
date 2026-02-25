@@ -4,7 +4,6 @@ import os
 import pandas as pd
 import streamlit as st
 from google.cloud import firestore, secretmanager
-
 from map import map_image
 
 # Load Google Cloud credentials from Secret Manager
