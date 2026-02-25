@@ -5,14 +5,20 @@ def client_setup():
     client = chromadb.Client()
     return client
 
-def collection_setup(client):
-    collection_name = "dandori_courses"
+# def collection_setup(client):
+#     collection_name = "dandori_courses"
     
-    if collection_name in client.list_collections():
-        collection = client.get_collection(collection_name)
-    else:
-        collection = client.create_collection(name=collection_name)
+#     if collection_name in client.list_collections():
+#         collection = client.get_collection(collection_name)
+#     else:
+#         collection = client.create_collection(name=collection_name)
 
+#     return collection
+
+def collection_setup(client):
+    return client.get_or_create_collection(name="dandori_courses")
+    
+    collection = client.get_or_create_collection(name=collection_name)
     return collection
 
 def build_document_text(row):
