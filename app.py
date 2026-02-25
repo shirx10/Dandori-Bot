@@ -56,16 +56,6 @@ display_cols = [
     'Cost'
 ]
 
-@st.cache_resource
-def setup_collection():
-    client = client_setup()
-    collection = collection_setup(client)
-    embed_data(st.session_state.df_dandori, collection)
-    return collection
-
-# if st.session_state.df_dandori:
-st.session_state.collection = setup_collection()
-
 if "filtered_df" not in st.session_state:
     st.session_state.filtered_df = st.session_state.df_dandori.copy()
 

@@ -1,7 +1,18 @@
 import streamlit as st
+import chromadb
 from llm import llm_client_setup, generate_response
 
 st.title("Dando the Helpful Panda 🐼")
+
+DB_PATH = "./chroma_db"
+
+@st.cache_resource
+def load_collection():
+    client = chromadb.PersistentClient(path=DB_PATH)
+    collection = client.get_collection(name="dandori_courses")
+    return collection
+
+st.session_state.collection = load_collection()
 
 # Initialize session state if not already done
 if "df_dandori" not in st.session_state:
