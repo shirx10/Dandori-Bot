@@ -14,11 +14,6 @@ def load_collection():
 
 st.session_state.collection = load_collection()
 
-# Initialize session state if not already done
-if "df_dandori" not in st.session_state:
-    st.error("Course data not loaded. Please go to the main page first.")
-    st.stop()
-
 @st.cache_resource
 def setup():
     client = llm_client_setup()
