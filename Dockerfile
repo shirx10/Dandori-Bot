@@ -17,12 +17,15 @@ RUN apt-get update && \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy project files
-COPY . .
+# Copy only requirements first for better caching
+COPY requirements.txt .
 
 # Upgrade pip and install Python dependencies
 RUN pip install --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
+
+# Copy project files (after dependencies so code changes don't invalidate cache)
+COPY . .
 
 # Expose Streamlit port
 EXPOSE 8080
