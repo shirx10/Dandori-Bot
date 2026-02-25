@@ -6,7 +6,7 @@ import streamlit as st
 from google.cloud import firestore, secretmanager
 from RAG import client_setup, collection_setup, embed_data
 
-from map import map_image
+from map import map_pin
 
 # Load Google Cloud credentials from Secret Manager
 def get_secret(secret_id, version_id="latest"):
@@ -157,5 +157,8 @@ if not filtered_df.empty:
 
         st.markdown("### Course Description")
         st.write(course["Description"])
+        lat, lng = map_pin(course["Location"])
+        df = pd.DataFrame({"lat": [lat], "lon": [lng], "size": [5000]})
+        st.map(df,zoom=6, size = "size")
     else:
         st.info("Click a course above to view full details.")

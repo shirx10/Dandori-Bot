@@ -1,6 +1,4 @@
-import streamlit as st
-
-def map_image(location, zoom=12, size="600x400"):
+def map_pin(location):
     LOCATION_COORDS = {
     "Bath": (51.3811, -2.3590),
     "Brighton": (50.8225, -0.1372),
@@ -29,16 +27,4 @@ def map_image(location, zoom=12, size="600x400"):
     "York": (53.9590, -1.0815),
 }
     
-    key = location
-
-    if key not in LOCATION_COORDS:
-        return "./Po_Profile_cropped.jpg"
-    
-    lat, lng = LOCATION_COORDS.get(key)
-
-    return (
-        "https://api.maptiler.com/maps/streets/static/"
-        f"{lng},{lat},12/600x400.png"
-        f"?key={st.secrets['MAPTILER_API_KEY']}"
-    )
-    
+    return LOCATION_COORDS.get(location, None)
