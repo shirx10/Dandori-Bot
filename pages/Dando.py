@@ -4,8 +4,8 @@ import streamlit as st
 
 from llm import llm_client_setup, generate_response
 from RAG import client_setup, collection_setup, embed_data
-from App import get_all_courses
-from db import save_chat_message, get_chat_history
+from app import get_all_courses
+from firestore import save_chat_message, get_chat_history
 
 st.title("Dando the Helpful Panda 🐼")
 
