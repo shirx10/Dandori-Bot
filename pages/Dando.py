@@ -11,7 +11,8 @@ def setup_collection():
     embed_data(st.session_state.df_dandori, collection)
     return collection
 
-collection = setup_collection()
+if st.session_state.df_dandori:
+    collection = setup_collection()
 
 @st.cache_resource
 def setup():

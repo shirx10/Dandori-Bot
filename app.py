@@ -40,7 +40,10 @@ def get_all_courses():
 def skills_set(df):
     return set(df['Skills'].str.split(',').explode().str.strip())
 
-st.session_state.df_dandori = get_all_courses()
+# Initialize session state
+if "df_dandori" not in st.session_state:
+    st.session_state.df_dandori = get_all_courses()
+
 skills = skills_set(st.session_state.df_dandori)
 display_cols = [
     'Class_ID',
