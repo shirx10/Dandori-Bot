@@ -4,6 +4,11 @@ from RAG import client_setup, collection_setup, embed_data
 
 st.title("Dando the Helpful Panda 🐼")
 
+# Initialize session state if not already done
+if "df_dandori" not in st.session_state:
+    st.error("Course data not loaded. Please go to the main page first.")
+    st.stop()
+
 @st.cache_resource
 def setup_collection():
     client = client_setup()
