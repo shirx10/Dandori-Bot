@@ -3,7 +3,7 @@ import json
 from openai import OpenAI
 import streamlit as st
 
-from RAG import query_collection
+# from RAG import query_collection
 
 
 def llm_client_setup():
@@ -36,29 +36,6 @@ def get_query_intent(client, query):
     except:
         return {"search_query": query, "max_cost": None, "location": None, "course_type": None}
 
-# def generate_response(client, query, collection):
-#     retrieved_info = query_collection(collection, query)
-#     context = retrieved_info['documents'][0]
-
-#     prompt = f"Based on the following course information:\n{context}\n\nAnswer the following question:\n{query}"
-
-#     response = client.chat.completions.create(
-#         model="mistralai/ministral-3b-2512",
-#         messages=[
-#             {
-#                 "role": "system",
-#                 "content": """You are a chatbot recommending courses to users.
-# It is important that you only recommend courses that are in the provided context.
-# If a course is not in the context, do not recommend it.
-# If the user's query cannot be answered with the provided course information or it is not relevant, respond with 'Sorry, I cannot answer that question.'
-# You should speak to the user in a friendly and whimsical manner, providing clear and concise information about the courses, do not be verbose.""",
-#             },
-#             {"role": "user", "content": prompt},
-#         ],
-#     )
-
-#     return response.choices[0].message.content
-
 def generate_response(client, query, collection):
     intent = get_query_intent(client, query)
 
@@ -67,7 +44,7 @@ def generate_response(client, query, collection):
         search_term = query
     # --------------------------------------
 
-    # from RAG import query_collection
+    from RAG import query_collection
     retrieved_info = query_collection(
         collection,
         query=search_term,

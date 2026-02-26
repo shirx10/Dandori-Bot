@@ -5,7 +5,6 @@ import pandas as pd
 import streamlit as st
 from google.cloud import firestore, secretmanager
 
-
 def get_firestore_client():
     """Get Firestore client with credentials from Secret Manager or local file."""
     try:
@@ -31,25 +30,16 @@ def get_firestore_client():
 
 db = get_firestore_client()
 
-
 def save_chat_message(session_id, user_query, bot_response):
     chat_ref = db.collection("chat_sessions").document(session_id)
 
-    chat_ref.set(
-        {
-            "messages": firestore.ArrayUnion(
-                [
-                    {
-                        "user": user_query,
-                        "bot": bot_response,
-                        "timestamp": datetime.datetime.now().isoformat(),
-                    }
-                ]
-            )
-        },
-        merge=True,
-    )
-
+    chat_ref.set({
+        "messages": firestore.ArrayUnion([{
+            "user": user_query,
+            "bot": bot_response,
+            "timestamp": datetime.datetime.now().isoformat()
+        }])
+    }, merge = True)
 
 def get_chat_history(session_id):
     doc = db.collection("chat_sessions").document(session_id).get()
@@ -57,8 +47,7 @@ def get_chat_history(session_id):
         return doc.to_dict().get("messages", [])
     return []
 
-
-@st.cache_data
+@st.cache_data 
 def get_all_courses():
     docs = db.collection("courses").stream()
     return pd.DataFrame([doc.to_dict() for doc in docs])
